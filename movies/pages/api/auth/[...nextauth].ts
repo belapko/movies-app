@@ -2,9 +2,29 @@ import NextAuth, {AuthOptions} from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import prismadb from '@/libs/prismadb';
 import {compare} from 'bcrypt'
+import GitHubProvider from 'next-auth/providers/github'
+import VkProvider from '@/libs/VkProvider'
+import GoogleProvider from 'next-auth/providers/google'
+import {PrismaAdapter} from "@next-auth/prisma-adapter";
+
 
 export const authOptions: AuthOptions = {
     providers: [
+        GitHubProvider({
+            clientId: process.env.GITHUB_ID || '',
+            clientSecret: process.env.GITHUB_SECRET || '',
+            allowDangerousEmailAccountLinking: true // this helps us to associate account with user if another account with this email already exists
+        }),
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID || '',
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+            allowDangerousEmailAccountLinking: true
+        }),
+        VkProvider({
+            clientId: process.env.VK_CLIENT_ID || '',
+            clientSecret: process.env.VK_CLIENT_SECRET || '',
+            allowDangerousEmailAccountLinking: true
+        }),
         Credentials({
             id: 'credentials',
             name: 'Credentials',
@@ -28,7 +48,7 @@ export const authOptions: AuthOptions = {
                     }
                 });
                 if (!user || !user.hashedPassword) {
-                    throw new Error('Email does not exists!');
+                    throw new Error('User does not exists!');
                 }
                 const isCorrectPassword = await compare(credentials.password, user.hashedPassword);
                 if (!isCorrectPassword) {
@@ -42,6 +62,7 @@ export const authOptions: AuthOptions = {
         signIn: '/auth',
     },
     debug: process.env.NODE_ENV === 'development',
+    adapter: PrismaAdapter(prismadb),
     session: {
         strategy: 'jwt',
     },
