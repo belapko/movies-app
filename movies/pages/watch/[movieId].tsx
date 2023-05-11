@@ -14,7 +14,7 @@ const Watch = () => {
                 <AiOutlineArrowLeft className='cursor-pointer' color={'fff'} size={40} onClick={() => router.push('/')} />
                 <p className='text-white text-xl md:text-3xl font-bold w-full text-center'>
                     <p className='font-light'>
-                        Nastya kakashka
+                        Watching
                     </p>
                     {data?.title}
                 </p>
