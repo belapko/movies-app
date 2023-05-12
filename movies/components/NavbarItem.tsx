@@ -2,11 +2,12 @@ import React from 'react';
 
 interface NavbarItemProps {
     label: string;
+    onClick: () => void;
 }
 
-const NavbarItem: React.FC<NavbarItemProps> = ({label}) => {
+const NavbarItem: React.FC<NavbarItemProps> = ({label, onClick}) => {
     return (
-        <div className='text-white cursor-pointer hover:text-gray-300 transition duration-500'>
+        <div className='text-white cursor-pointer hover:text-gray-300 transition duration-500' onClick={onClick}>
             {label}
         </div>
     );
