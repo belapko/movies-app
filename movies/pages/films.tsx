@@ -7,7 +7,7 @@ const Films = () => {
 
     return (
         <>
-        <div className='mt-10'>
+        <div>
             <MovieList data={movies} title={"Films"}/>
         </div>
         </>
